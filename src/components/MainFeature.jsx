@@ -51,16 +51,18 @@ const MainFeature = ({ updateStats }) => {
   
   // Update localStorage when tasks change
   useEffect(() => {
+    // Save tasks to localStorage
     localStorage.setItem('tasks', JSON.stringify(tasks))
     
     // Update stats
-    if (updateStats) {
+    // Only call updateStats if it exists and is a function
+    if (typeof updateStats === 'function') {
       updateStats({
         total: tasks.length,
         completed: tasks.filter(task => task.completed).length
       })
     }
-  }, [tasks, updateStats])
+  }, [tasks]) // Remove updateStats from dependency array to prevent infinite loop
   
   const validateForm = (task) => {
     const errors = {}
